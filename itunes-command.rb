@@ -286,10 +286,12 @@ class ITunes
 end
 class ItunesCommand 
   VERSION = '1.0.0'
+  attr_accessor :playlist_mode
   def initialize
     @i = ITunes.new
     @playlists = []
     @tracks = []
+    @playlist_mode = false
   end
 
   def parse(method, *args)
@@ -360,8 +362,20 @@ class ItunesCommand
   end
 
   def playlists
-    @playlists = @i.playlists
-    print_names(@playlists)
+    @playlist_mode = true
+    puts "Showing playlists"
+    playlists = @i.playlists
+    playlists.each_with_index do |p,i|
+      puts("%2d %s" % [i, p.name])
+    end
+  end
+
+  def select_playlist(index)
+    @current_playlist = @i.playlists[index.to_i]
+    # show tracks
+    @tracks = @current_playlist.tracks
+    print_names(@tracks)
+    @playlist_mode = false
   end
 
   def playlist(index)
@@ -401,10 +415,12 @@ v <level>           sets the volume level (1-100)
 + <increment>       increases the volume by <increment>; default is 10 steps
 - <increment>       decreases the volume by <increment>; default is 10 steps
 x                   stop
-q                   shows currently queued tracks
+p                   shows all playlists 
 END
 
-COMMANDS = { 's' => :search, 'x' => :stop , 'play' => :play, 'v' => :volume, 'a' => :artists, '+' => :+, '-' => '-'}
+COMMANDS = { 's' => :search, 
+'x' => :stop , 'play' => :play, 'v' => :volume, 'a' => :artists, '+' => :+, '-' => '-',
+'p' => :playlists, 'select_playlist' => :select_playlist }
 
 if __FILE__ == $0
   i = ItunesCommand.new
@@ -419,7 +435,11 @@ if __FILE__ == $0
     end
     args = command.split(' ')
     if args.first =~ /\d+/
-      args.unshift 'play'
+      if i.playlist_mode
+        args.unshift 'select_playlist'
+      else
+        args.unshift 'play'
+      end
     end
     method = COMMANDS[args.shift]
     if method.nil?
