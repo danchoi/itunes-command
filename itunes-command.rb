@@ -416,6 +416,7 @@ v <level>           sets the volume level (1-100)
 - <increment>       decreases the volume by <increment>; default is 10 steps
 x                   stop
 p                   shows all playlists 
+<playlist number>   shows all the tracks in a playlist
 END
 
 COMMANDS = { 's' => :search, 
