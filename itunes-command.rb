@@ -285,7 +285,7 @@ class ITunes
   end
 end
 class ItunesCommand 
-  VERSION = '1.0.0'
+  VERSION = '1.0.2'
   attr_accessor :playlist_mode
   def initialize
     @i = ITunes.new
@@ -383,6 +383,39 @@ class ItunesCommand
     puts @playlists[index].name
   end
 
+  def queue(index)
+    @i.queue_track(track=@tracks[index.to_i])
+    puts "Added #{track.name} to the queue"
+  end
+
+  def show_queue
+    current_track_index = `osascript -e 'tell application "iTunes" to index of current track as string'`.to_i
+    @i.queue.tracks.each_with_index do |t, i|
+      if current_track_index - 1 == i
+        puts "%s : %s <--- currently playing" % [t.artist, t.name]
+      else
+        puts "%s : %s" % [t.artist, t.name]
+      end
+    end
+  end
+
+  def clear_queue
+    @i.clear_queue
+  end
+
+  def start_queue
+    @i.stop
+    @i.queue.playOnce(1)
+    track = @i.currentTrack
+    puts "Playing '#{track.name}' by #{track.artist} from #{track.album}"
+  end
+
+  def skip
+    @i.nextTrack
+    track = @i.currentTrack
+    puts "Playing '#{track.name}' by #{track.artist} from #{track.album}"
+  end
+
   def artists
     rows = []
     (@artists=@i.artists).keys.sort_by {|x| x.downcase}.each_with_index  do |k, i|
@@ -417,11 +450,17 @@ v <level>           sets the volume level (1-100)
 x                   stop
 p                   shows all playlists 
 <playlist number>   shows all the tracks in a playlist
+l                   list all tracks in the queue (which will play tracks in succession)
+n <track number>    put a track in the queue
+c                   clear the queue
+g                   start playing tracks in the queue
+k                   skip to next track in queue
 END
 
 COMMANDS = { 's' => :search, 
 'x' => :stop , 'play' => :play, 'v' => :volume, 'a' => :artists, '+' => :+, '-' => '-',
-'p' => :playlists, 'select_playlist' => :select_playlist }
+'p' => :playlists, 'select_playlist' => :select_playlist, 'l' => :show_queue, 'n' => :queue, 
+'c' => :clear_queue, 'g' => 'start_queue', 'k' => 'skip'}
 
 if __FILE__ == $0
   i = ItunesCommand.new
