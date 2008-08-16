@@ -410,6 +410,7 @@ class ItunesCommand
 
   def clear_queue
     @i.clear_queue
+    puts "Cleared queue"
   end
 
   def start_queue
