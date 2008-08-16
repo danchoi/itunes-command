@@ -393,9 +393,14 @@ class ItunesCommand
       puts "The queue is empty"
       return
     end
-    current_track_index = `osascript -e 'tell application "iTunes" to index of current track as string'`.to_i
+    state = `osascript -e 'tell application "iTunes" to player state as string'`.strip
+    if state != 'stopped'
+      current_track_index = `osascript -e 'tell application "iTunes" to index of current track as string'`.to_i
+    else
+      current_track_index = nil
+    end
     @i.queue.tracks.each_with_index do |t, i|
-      if current_track_index - 1 == i
+      if current_track_index && current_track_index - 1 == i
         puts "%s : %s <--- currently playing" % [t.artist, t.name]
       else
         puts "%s : %s" % [t.artist, t.name]
