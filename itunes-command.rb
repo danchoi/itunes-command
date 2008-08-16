@@ -389,6 +389,10 @@ class ItunesCommand
   end
 
   def show_queue
+    if @i.queue.tracks.empty?
+      puts "The queue is empty"
+      return
+    end
     current_track_index = `osascript -e 'tell application "iTunes" to index of current track as string'`.to_i
     @i.queue.tracks.each_with_index do |t, i|
       if current_track_index - 1 == i
