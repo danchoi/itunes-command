@@ -318,7 +318,10 @@ class ItunesCommand
     items =  Array(items)
     rows = []
     items.each_with_index do |t, i|
-      puts("%2d %s : %s" % [i, t.artist, t.name])
+      begin
+        puts("%2d %s : %s" % [i, t.artist, t.name])
+      rescue
+      end
     end
     items
   end
