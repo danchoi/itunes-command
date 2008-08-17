@@ -344,66 +344,73 @@ class ItunesCommand
       less.close_write
     end
   end
-end
 
-HELP = <<END
-itunes-command
+  HELP = <<END
+  itunes-command
 
-Commands:
+  Commands:
 
-q                   quit
-h                   show commands
-s <string>          searches for tracks matching <string>
-<track number>      plays a track (assumes you've done a search and got results)
-a                   lists all artists in the library
-v                   show the current volume level
-v <level>           sets the volume level (1-100)
-+ <increment>       increases the volume by <increment>; default is 10 steps
-- <increment>       decreases the volume by <increment>; default is 10 steps
-x                   stop
-p                   shows all playlists 
-<playlist number>   shows all the tracks in a playlist
-l                   list all tracks in the queue (which will play tracks in succession)
-n <track number>    put a track in the queue
-c                   clear the queue
-g                   start playing tracks in the queue
-k                   skip to next track in queue
+  q                   quit
+  h                   show commands
+  s <string>          searches for tracks matching <string>
+  <track number>      plays a track (assumes you've done a search and got results)
+  a                   lists all artists in the library
+  v                   show the current volume level
+  v <level>           sets the volume level (1-100)
+  + <increment>       increases the volume by <increment>; default is 10 steps
+  - <increment>       decreases the volume by <increment>; default is 10 steps
+  x                   stop
+  p                   shows all playlists 
+  <playlist number>   shows all the tracks in a playlist
+  l                   list all tracks in the queue (which will play tracks in succession)
+  n <track number>    put a track in the queue
+  c                   clear the queue
+  g                   start playing tracks in the queue
+  k                   skip to next track in queue
 END
 
-COMMANDS = { 's' => :search, 
-'x' => :stop , 'play' => :play, 'v' => :volume, 'a' => :artists, '+' => :+, '-' => '-',
-'p' => :playlists, 'select_playlist' => :select_playlist, 'l' => :show_queue, 'n' => :queue, 
-'c' => :clear_queue, 'g' => 'start_queue', 'k' => 'skip'}
+  COMMANDS = { 's' => :search, 
+  'x' => :stop , 'play' => :play, 'v' => :volume, 'a' => :artists, '+' => :+, '-' => '-',
+  'p' => :playlists, 'select_playlist' => :select_playlist, 'l' => :show_queue, 'n' => :queue, 
+  'c' => :clear_queue, 'g' => 'start_queue', 'k' => 'skip'}
 
-if __FILE__ == $0
-  i = ItunesCommand.new
-  puts HELP
-  loop do
-    command = Readline.readline(">> ").chomp
-    if command =~ /^q/
-      exit
-    elsif command =~ /^h/
-      puts HELP
-      next
-    end
-    args = command.split(' ')
-    if args.first =~ /\d+/
-      if i.playlist_mode
-        args.unshift 'select_playlist'
-      else
-        args.unshift 'play'
+  def self.run(argv=ARGV)
+    i = ItunesCommand.new
+    puts HELP
+    loop do
+      command = Readline.readline(">> ").chomp
+      if command =~ /^q/
+        exit
+      elsif command =~ /^h/
+        puts HELP
+        next
+      end
+      args = command.split(' ')
+      if args.first =~ /\d+/
+        if i.playlist_mode
+          args.unshift 'select_playlist'
+        else
+          args.unshift 'play'
+        end
+      end
+      method = COMMANDS[args.shift]
+      if method.nil?
+        puts "Sorry, I don't recognize that command."
+        next
+      end
+      begin
+        args.empty? ? i.send(method) : i.send(method, args.join(' '))
+      rescue ArgumentError
+        puts "Invalid command."
       end
     end
-    method = COMMANDS[args.shift]
-    if method.nil?
-      puts "Sorry, I don't recognize that command."
-      next
-    end
-    begin
-      args.empty? ? i.send(method) : i.send(method, args.join(' '))
-    rescue ArgumentError
-      puts "Invalid command."
-    end
+
   end
+
+end
+
+
+if __FILE__ == $0
+  ItunesCommand.run ARGV
 end
 
