@@ -287,8 +287,17 @@ class ItunesCommand
   end
 
   def queue(index)
-    @i.queue_track(track=@tracks[index.to_i])
-    puts "Added #{track.name} to the queue"
+    if index =~ /\d+-\d+/
+      start = index.split('-').first.to_i 
+      last = index.split('-').last.to_i
+      Array(start..last).each do |i|
+        @i.queue_track(track=@tracks[i])
+        puts "Added #{track.name} to the queue"
+      end
+    else
+      @i.queue_track(track=@tracks[index.to_i])
+      puts "Added #{track.name} to the queue"
+    end
   end
 
   def show_queue
@@ -363,7 +372,7 @@ class ItunesCommand
   p                   shows all playlists 
   <playlist number>   shows all the tracks in a playlist
   l                   list all tracks in the queue (which will play tracks in succession)
-  n <track number>    put a track in the queue
+  n <track number>    put a track in the queue; can be a range, e.g. 3-5
   c                   clear the queue
   g                   start playing tracks in the queue
   k                   skip to next track in queue
