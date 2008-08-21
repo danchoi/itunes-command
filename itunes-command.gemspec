@@ -10,7 +10,7 @@ spec = Gem::Specification.new do |spec|
   spec.files = Dir['lib/*.rb']
   spec.bindir = "bin"
   spec.executables = "itunes-command"
-  spec.version = '1.5'
+  spec.version = '1.6'
   spec.has_rdoc = false
 end
 
