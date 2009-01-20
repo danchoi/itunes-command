@@ -8,7 +8,7 @@ begin
     spec.platform = Gem::Platform::CURRENT
     spec.author = 'Daniel Choi'
     spec.email = 'dhchoi@gmail.com'
-    spec.homepage = 'http://cesareborgia.com/software/itunes-command/'
+    spec.homepage = 'http://danielchoi.com/software/itunes-command'
     spec.files = Dir['lib/*.rb']
     spec.bindir = "bin"
     spec.executables = "itunes-command"
