@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.executables = ["itunes-command"]
   s.files = ["lib/itunes_command.rb", "bin/itunes-command"]
   s.has_rdoc = true
-  s.homepage = %q{http://cesareborgia.com/software/itunes-command/}
+  s.homepage = %q{http://danielchoi.com/software/itunes-command}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.1}
