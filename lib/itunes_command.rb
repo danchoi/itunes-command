@@ -188,7 +188,7 @@ class ITunes
 
 end
 class ItunesCommand 
-  VERSION = '1.6.3'
+  VERSION = '1.6.4'
   attr_accessor :playlist_mode
   def initialize
     @i = ITunes.new
