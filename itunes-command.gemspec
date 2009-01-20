@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{itunes-command}
-  s.version = "1.3.2"
+  s.version = "1.6.1"
   s.platform = %q{x86-darwin-9}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
