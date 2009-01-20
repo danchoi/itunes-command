@@ -12,7 +12,6 @@ begin
     spec.files = Dir['lib/*.rb']
     spec.bindir = "bin"
     spec.executables = "itunes-command"
-    spec.version = '1.6'
     spec.has_rdoc = false
   end 
 rescue LoadError 
