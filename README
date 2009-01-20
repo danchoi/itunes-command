@@ -1,3 +1,5 @@
+itunes-command
+
 This is a simple command line program to search for tracks on iTunes and play
 them. You can also adjust the volume, see all the artists in the library, and
 queue tracks with simple and convenient commands.
