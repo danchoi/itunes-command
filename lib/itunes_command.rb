@@ -300,6 +300,21 @@ class ItunesCommand
     end
   end
 
+  def playpause
+    puts %x{tell application "iTunes"
+      playpause
+    end tell}
+    state = `osascript -e 'tell application "iTunes" to player state as string'`.strip
+    puts state
+    return
+    if state == 'stopped'
+      @i.currentTrack.playOnce(1)
+    else
+      puts @i.currentTrack.name
+      @i.pause
+    end
+  end
+
   def show_queue
     if @i.queue.tracks.empty?
       puts "The queue is empty"
@@ -338,6 +353,10 @@ class ItunesCommand
     puts "Playing '#{track.name}' by #{track.artist} from #{track.album}"
   end
 
+  def playpause
+    @i.playpause
+  end
+
   def artists
     rows = []
     (@artists=@i.artists).keys.sort_by {|x| x.downcase}.each_with_index  do |k, i|
@@ -369,6 +388,7 @@ class ItunesCommand
   + <increment>       increases the volume by <increment>; default is 10 steps
   - <increment>       decreases the volume by <increment>; default is 10 steps
   x                   stop
+  "                   pause/play
   p                   shows all playlists 
   <playlist number>   shows all the tracks in a playlist
   l                   list all tracks in the queue (which will play tracks in succession)
@@ -381,7 +401,7 @@ END
   COMMANDS = { 's' => :search, 
   'x' => :stop , 'play' => :play, 'v' => :volume, 'a' => :artists, '+' => :+, '-' => '-',
   'p' => :playlists, 'select_playlist' => :select_playlist, 'l' => :show_queue, 'n' => :queue, 
-  'c' => :clear_queue, 'g' => 'start_queue', 'k' => 'skip'}
+  'c' => :clear_queue, 'g' => 'start_queue', 'k' => 'skip', '"' => :playpause }
 
   def self.run(argv=ARGV)
     i = ItunesCommand.new
