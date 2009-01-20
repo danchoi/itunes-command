@@ -1,2 +1,121 @@
-Initial commit for this project. See itunes-command.rb for project
-details.
+This is a simple command line program to search for tracks on iTunes and play
+them. You can also adjust the volume, see all the artists in the library, and
+queue tracks with simple and convenient commands.
+
+itunes-command is available as a Ruby Gem. To install, open a Terminal window
+and type
+
+  sudo gem install itunes-command
+
+The gem installs an executable, which will require your administrator’s password.
+
+You can run itunes-command simply by typing
+
+  itunes-command
+
+Here is a sample session:
+
+my-computer:~ choi$ itunes-command
+ruby: unknown type name "tdta".
+itunes-command
+
+Commands:
+
+q                   quit
+h                   show commands
+s <string>          searches for tracks matching <string>
+<track number>      plays a track (assumes you've done a search and got results)
+a                   lists all artists in the library
+v                   show the current volume level
+v <level>           sets the volume level (1-100)
++ <increment>       increases the volume by <increment>; default is 10 steps
+- <increment>       decreases the volume by <increment>; default is 10 steps
+x                   stop
+p                   shows all playlists
+<playlist number>   shows all the tracks in a playlist
+l                   list all tracks in the queue (which will play tracks in 
+                    succession)
+n <track number>    put a track in the queue; can be a range, e.g. 3-5
+c                   clear the queue
+g                   start playing tracks in the queue
+k                   skip to next track in queue
+>> s priscilla
+ 0 Priscilla Ahn : Dream
+ 1 Priscilla Ahn : Are We Different
+ 2 Priscilla Ahn : I Don't Think So
+ 3 Priscilla Ahn : Lost
+ 4 Priscilla Ahn : Rain
+ 5 Priscilla Ahn : Wallflower
+ 6 Priscilla Ahn : Dream
+ 7 Priscilla Ahn : Opportunity to Cry
+ 8 Priscilla Ahn : A Good Day (Morning Song)
+ 9 Priscilla Ahn : Red Cape
+10 Priscilla Ahn : Astronaut
+11 Priscilla Ahn : I Don't Think So
+12 Priscilla Ahn : Masters In China
+13 Priscilla Ahn : We Were Free
+14 Priscilla Ahn : Leave the Light On
+15 Priscilla Ahn : Find My Way Back Home
+16 Priscilla Ahn : Lullaby
+>> 0
+Playing 'Dream' by Priscilla Ahn from Priscilla Ahn EP
+>> 
+>> s radiohead faust
+0 Radiohead : Faust Arp
+>> 0
+Playing 'Faust Arp' by Radiohead from In Rainbows
+>> v
+The volume is 18 out of 100
+>> +
+The volume is 28 out of 100
+>> s feist
+ 0 Feist : I Feel It All (Britt Daniel Remix)
+ 1 Feist : Mushaboom (Postal Service Remix)
+ 2 Feist : Inside + Out (Apostle of Hustle Unmix)
+ 3 Feist : One Evening (Remix By VV)
+ 4 Feist : So Sorry
+ 5 Feist : I Feel It All
+ 6 Feist : My Moon My Man
+ 7 Feist : The Park
+ 8 Feist : The Water
+ 9 Feist : Sea Lion Woman
+10 Feist : Past In Present
+11 Feist : The Limit to Your Love
+12 Feist : 1234
+13 Feist : Brandy Alexander
+14 Feist : Intuition
+15 Feist : Honey Honey
+16 Feist : How My Heart Behaves
+17 Feist : Sealion (Chromeo Remix) [Bonus Track]
+18 Feist : The Water (Red Demos) [Bonus Track]
+19 Feist : 1234
+>> n 1
+Added Mushaboom (Postal Service Remix) to the queue
+>> s postal
+ 0 Feist : Mushaboom (Postal Service Remix)
+ 1 The Postal Service : Be Still My Heart (Nobody Remix)
+ 2 The Postal Service : Such Great Heights
+ 3 The Postal Service : We Will Become Silhouettes
+>> n 2
+Added Such Great Heights to the queue
+>> l
+Feist : Mushaboom (Postal Service Remix)
+The Postal Service : Such Great Heights
+>> g
+Playing 'Mushaboom (Postal Service Remix)' by Feist \
+  from Mushaboom (Postal Service Remix) - Single
+>> l
+Feist : Mushaboom (Postal Service Remix) <--- currently playing
+The Postal Service : Such Great Heights
+>> 
+
+
+(The weird warning on the second line is just a quirk of a recent update to the
+iTunes application. It’s harmless and might be resolved by Apple in a future
+release of iTunes. If you’re curious, you can read more about this warning
+message here.)
+
+itunes-command is also useful for controlling iTunes remotely over a ssh
+session.
+
+
